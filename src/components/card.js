@@ -1,3 +1,5 @@
+import axios from "axios";
+
 const Card = (article) => {
   // TASK 5
   // ---------------------
@@ -17,6 +19,33 @@ const Card = (article) => {
   //   </div>
   // </div>
   //
+  const { headline, authorPhoto, authorName } = article;
+  
+  const div = document.createElement('div');
+  div.classList.add('card');
+
+  const div2 = document.createElement('div');
+  div2.classList.add('headline');
+  div2.textContent = headline
+  div.appendChild(div2);
+
+  const div3 = document.createElement('div');
+  div3.classList.add('author');
+  div.appendChild(div3);
+
+  const div4 = document.createElement('div');
+  div4.classList.add('img-container');
+  div3.appendChild(div4);
+
+  const img = document.createElement('img');
+  img.src = authorPhoto
+  div4.appendChild(img);
+
+  const span = document.createElement('span');
+  span.textContent = `By ${authorName}`;
+  div3.appendChild(span);
+
+  return div;
 }
 
 const cardAppender = (selector) => {
@@ -28,6 +57,30 @@ const cardAppender = (selector) => {
   // Create a card from each and every article object in the response, using the Card component.
   // Append each card to the element in the DOM that matches the selector passed to the function.
   //
+  axios.get('https://lambda-times-api.herokuapp.com/articles')
+  .then(({res}) => {
+    const {javascript, bootstrap, technology, jquery, node} = res.articles;
+    javascript.map(element => {
+      const select = document.querySelector(selector);
+      select.appendChild(Card(element));
+    });
+    bootstrap.map(element => {
+      const select = document.querySelector(selector);
+      select.appendChild(Card(element));
+    });
+    technology.map(element => {
+      const select = document.querySelector(selector);
+      select.appendChild(Card(element));
+    });
+    jquery.map(element => {
+      const select = document.querySelector(selector);
+      select.appendChild(Card(element));
+    });
+    node.map(element => {
+      const select = document.querySelector(selector);
+      select.appendChild(Card(element));
+    });
+  })
 }
 
 export { Card, cardAppender }
